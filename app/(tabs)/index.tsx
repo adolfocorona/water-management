@@ -1,70 +1,170 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Card } from 'react-native-paper';
+import { useTheme } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+// Define los tipos para las rutas
+type RootStackParamList = {
+  'consumption-map': undefined;
+  'alerts': undefined;
+  'critical-zones': undefined;
+  'settings': undefined;
+  'reports': undefined;
+};
 
 export default function HomeScreen() {
+  const theme = useTheme();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(); // Asigna los tipos a useNavigation
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ScrollView contentContainerStyle={styles.container}>
+      {/* Encabezado */}
+      <View style={styles.header}>
+        <Image source={require('../../assets/images/queretaro.jpg')} style={styles.logo} />
+        <Text style={styles.title}>Gestión Inteligente de Recursos Hídricos</Text>
+      </View>
+
+      {/* Mensaje de bienvenida */}
+      <View style={styles.welcomeContainer}>
+        <Text style={styles.welcomeText}>
+          Bienvenido a la plataforma de gestión avanzada de recursos hídricos del Estado de Querétaro.
+        </Text>
+        <Text style={styles.summaryText}>
+          Optimiza la gestión de agua con datos en tiempo real y análisis predictivos.
+        </Text>
+      </View>
+
+      {/* Tarjetas informativas */}
+      <View style={styles.cardContainer}>
+        <Card style={styles.card}>
+          <TouchableOpacity onPress={() => navigation.navigate('consumption-map')}>
+            <Text style={styles.cardTitle}>Mapa de Consumo</Text>
+            <Text style={styles.cardDescription}>
+              Visualiza el consumo de agua en tiempo real en todo el estado.
+            </Text>
+          </TouchableOpacity>
+        </Card>
+
+        <Card style={styles.card}>
+          <TouchableOpacity onPress={() => navigation.navigate('alerts')}>
+            <Text style={styles.cardTitle}>Alertas</Text>
+            <Text style={styles.cardDescription}>
+              Recibe alertas en tiempo real sobre consumo inusual y problemas.
+            </Text>
+          </TouchableOpacity>
+        </Card>
+
+        <Card style={styles.card}>
+          <TouchableOpacity onPress={() => navigation.navigate('critical-zones')}>
+            <Text style={styles.cardTitle}>Zonas Críticas</Text>
+            <Text style={styles.cardDescription}>
+              Identifica zonas con fugas recurrentes o falta de agua.
+            </Text>
+          </TouchableOpacity>
+        </Card>
+      </View>
+
+      {/* Botones de acción rápida */}
+      <View style={styles.actionContainer}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('settings')}>
+          <Text style={styles.buttonText}>Configuraciones</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('reports')}>
+          <Text style={styles.buttonText}>Reportes</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Pie de página */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>© 2024 Gobierno del Estado de Querétaro</Text>
+        <Text style={styles.footerText}>Contacto: info@queretaro.gob.mx</Text>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flexGrow: 1,
+    padding: 16,
+    backgroundColor: '#f5f5f5',
   },
-  stepContainer: {
-    gap: 8,
+  header: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  logo: {
+    width: 200,
+    height: 100,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#003366', // Azul oscuro
+    textAlign: 'center',
+  },
+  welcomeContainer: {
+    marginBottom: 24,
+  },
+  welcomeText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#003366',
+    textAlign: 'center',
+  },
+  summaryText: {
+    fontSize: 16,
+    color: '#555',
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  cardContainer: {
+    flexDirection: 'column',
+    marginBottom: 24,
+  },
+  card: {
+    marginVertical: 8,
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    elevation: 2,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#003366',
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  cardDescription: {
+    fontSize: 14,
+    color: '#555',
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 24,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  footer: {
+    marginTop: 24,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 14,
+    color: '#777',
+    textAlign: 'center',
   },
 });
